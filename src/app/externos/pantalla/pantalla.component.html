@@ -1,0 +1,55 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
+    <div class="container mx-auto pt-5">
+        <div class="bg-white p-10 rounded-xl shadow-2xl">
+            <div class="mb-8">
+                <div class="grid grid-cols-3 text-center bg-gradient-to-r from-secondaryColor to-blue-700 p-6 rounded-lg">
+                    <div class="font-bold text-3xl text-white border-r-2 border-white/20">
+                        <h2>BOX</h2>
+                    </div>
+                    <div class="font-bold text-3xl text-white border-r-2 border-white/20">
+                        <h2>TURNO</h2>
+                    </div>
+                    <div class="font-bold text-3xl text-white">
+                        <h2>ESTADO</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div *ngFor="let estado of estadoPantalla"
+                    class="grid grid-cols-3 gap-6 text-center p-6 rounded-xl transition-all duration-300"
+                    [ngClass]="{
+                        'bg-green-100 border-2 border-green-500 shadow-lg scale-105': estado.estado === 'Llamando',
+                        'bg-gray-50 border-2 hover:bg-gray-100 hover:shadow-lg hover:scale-[1.02]': estado.estado !== 'Llamando'
+                    }">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-5xl font-bold" [ngClass]="{
+                            'text-green-600': estado.estado === 'Llamando',
+                            'text-secondaryColor': estado.estado !== 'Llamando'
+                        }">{{ estado.box }}</h2>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-5xl font-bold" [ngClass]="{
+                            'text-green-600': estado.estado === 'Llamando',
+                            'text-gray-800': estado.estado !== 'Llamando'
+                        }">{{ estado.turno }}</h2>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <h2 *ngIf="estado.estado != 'Libre'" class="text-4xl font-bold uppercase tracking-wider" [ngClass]="{
+                                'text-green-600': estado.estado === 'Llamando',
+                                'text-blue-600': estado.estado === 'Atendiendo',
+                                'text-gray-600': estado.estado === 'Libre'
+                            }">
+                            <i class="fas mr-3" [ngClass]="{
+                                'fa-user-check': estado.estado === 'Atendiendo',
+                                'fa-bell animate-bounce': estado.estado === 'Llamando',
+                                'fa-clock': estado.estado === 'Libre'
+                            }"></i>
+                            {{ estado.estado }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<audio #notificacion src="assets/sonidos/notificacion.wav"></audio>

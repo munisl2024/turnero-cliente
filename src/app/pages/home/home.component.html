@@ -1,0 +1,37 @@
+
+<div class="gsap-contenido">
+  <div class="text-center flex flex-col items-center justify-center my-4 md:my-10 mb-5">
+    <!-- <div class="p-8 bg-white rounded-lg group border shadow border-gray-200">
+      <img class="w-52 md:w-72 group-hover:scale-105 transition-all" src="assets/img/Logo.png">
+    </div> -->
+    <h1 class="text-xl md:text-3xl mt-8"> TURNERO MUNICIPAL </h1>
+    <p class="text-gray-600 mt-2"> Version 1.0.0 </p>
+  </div>
+  <div class="mt-10 flex items-center justify-center w-full flex-wrap mx-auto pb-10">
+
+    <div title="Atencion" routerLink="/dashboard/atender"
+      class="w-52 h-44 group duration-200 m-2 relative shadow-lg rounded-lg justify-center cursor-pointer hover:text-white transform hover:-translate-y-2 border border-gray-200 bg-gray-100 text-center">
+      <img class="w-32 mt-2 group-hover:scale-105 transition-all mx-auto" src="assets/svg/atender.svg">
+      <p class="bg-secondaryColor group-hover:bg-primaryColor text-sm absolute w-full p-2 rounded-b-lg bottom-0 text-white"> Atención </p>
+    </div>
+
+    <div *ngIf="authService.usuario.role == 'ADMIN_ROLE'" title="Boxes" routerLink="/dashboard/boxes"
+      class="w-52 h-44 group duration-200 m-2 relative shadow-lg rounded-lg justify-center cursor-pointer transform hover:-translate-y-2 border border-gray-200 bg-gray-100 text-center">
+      <img class="w-32 mt-2 group-hover:scale-105 transition-all mx-auto" src="assets/svg/boxes.svg">
+      <p class="bg-secondaryColor group-hover:bg-primaryColor text-sm absolute w-full p-2 rounded-b-lg bottom-0 text-white"> Boxes </p>
+    </div>
+
+    <div *ngIf="authService.usuario.role == 'ADMIN_ROLE'" title="Tramites" routerLink="/dashboard/tramites"
+      class="w-52 h-44 group duration-200 m-2 relative shadow-lg rounded-lg justify-center cursor-pointer transform hover:-translate-y-2 border border-gray-200 bg-gray-100 text-center">
+      <img class="w-32 mt-2 group-hover:scale-105 transition-all mx-auto" src="assets/svg/tramites.svg">
+      <p class="bg-secondaryColor group-hover:bg-primaryColor text-sm absolute w-full p-2 rounded-b-lg bottom-0 text-white"> Tramites </p>
+    </div>
+
+    <div *ngIf="authService.usuario.role == 'ADMIN_ROLE'" title="Estadisticas" routerLink="/dashboard/estadisticas"
+      class="w-52 h-44 group duration-200 m-2 relative shadow-lg rounded-lg justify-center cursor-pointer transform hover:-translate-y-2 border border-gray-200 bg-gray-100 text-center">
+      <img class="w-32 mt-2 group-hover:scale-105 transition-all mx-auto" src="assets/svg/estadisticas.svg">
+      <p class="bg-secondaryColor group-hover:bg-primaryColor text-sm absolute w-full p-2 rounded-b-lg bottom-0 text-white"> Estadisticas </p>
+    </div>
+
+  </div>
+</div>

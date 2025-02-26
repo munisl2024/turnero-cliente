@@ -1,0 +1,64 @@
+<app-modal [showModal]="tramitesService.showModalAbm"
+    [titulo]="tramitesService.estadoAbm == 'crear' ? 'Creando trámite' : 'Editando trámite'"
+    [urlIcono]="'assets/svg/tramites.svg'" [estadoFormulario]="tramitesService.estadoAbm" [textoCrear]="'Crear trámite'"
+    [textoActualizar]="'Actualizar trámite'" (closeModal)="cerrarModal()" (crear)="nuevoTramite()"
+    (actualizar)="actualizarTramite()">
+    <div class="bg-white rounded-lg shadow-xl">
+        <!-- Contenido -->
+        <div class="p-6 max-h-[32rem] overflow-y-auto">
+            <div class="space-y-4">
+
+                <div>
+                    <label class="label-formulario">
+                        Descripción <span class="text-red-500">*</span>
+                    </label>
+                    <input (keyup.enter)="submit()" [(ngModel)]="tramitesService.abmForm.descripcion"
+                        class="input-formulario" placeholder="Ej. Rentas" type="text">
+                </div>
+
+                <div>
+                    <label class="label-formulario">
+                        Identificador <span class="text-red-500">*</span>
+                    </label>
+                    <input (keyup.enter)="submit()" [(ngModel)]="tramitesService.abmForm.identificador"
+                        class="input-formulario" placeholder="Ej. R" type="text">
+                </div>
+
+                <div class="mt-2">
+                    <p class="label-formulario"> Icono de tramite <span class="text-red-500"> * </span> </p>
+                    <div class="flex items-center flex-wrap gap-2 mt-2">
+                        <div *ngFor="let icono of iconos" (click)="seleccionarDeseleccionarIcono(icono)"
+                            [ngClass]="{'bg-blue-100 border-blue-400': icono.url == tramitesService.abmForm.iconoUrl}"
+                            class="p-2 border cursor-pointer hover:bg-blue-100 border-gray-300 active:scale-95 transition-all hover:border-blue-400 rounded-lg">
+                            <img [src]="icono.url" class="w-12 h-12" alt="Ícono del trámite">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info adicional en modo edición -->
+                <div *ngIf="tramitesService.tramiteSeleccionado && tramitesService.estadoAbm === 'editar'"
+                    class="grid md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <h3 class="text-sm font-semibold text-gray-700">Fecha de alta</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">
+                            {{ tramitesService.tramiteSeleccionado.createdAt | fecha }}
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <h3 class="text-sm font-semibold text-gray-700">Usuario creador</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1 capitalize">
+                            {{ tramitesService.tramiteSeleccionado.creatorUser.apellido.toLowerCase() }}
+                            {{ tramitesService.tramiteSeleccionado.creatorUser.nombre.toLowerCase() }}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</app-modal>

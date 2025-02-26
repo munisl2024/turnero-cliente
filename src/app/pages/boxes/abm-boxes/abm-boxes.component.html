@@ -1,0 +1,52 @@
+<app-modal
+  [showModal]="boxesService.showModalAbm"
+  [titulo]="boxesService.estadoAbm == 'crear' ? 'Creando box' : 'Editando box'"
+  [urlIcono]="'assets/svg/boxes.svg'"
+  [estadoFormulario]="boxesService.estadoAbm"
+  [textoCrear]="'Crear box'"
+  [textoActualizar]="'Actualizar box'"
+  (closeModal)="cerrarModal()"
+  (crear)="nuevoBox()"
+  (actualizar)="actualizarBox()"
+  >
+  <div class="bg-white rounded-lg shadow-xl">
+    <!-- Contenido -->
+    <div class="p-6 max-h-[32rem] overflow-y-auto">
+      <div class="space-y-4">
+
+        <div>
+          <label class="label-formulario">
+            Descripción <span class="text-red-500">*</span>
+          </label>
+          <input (keyup.enter)="submit()" [(ngModel)]="boxesService.abmForm.descripcion"
+            class="input-formulario"
+            placeholder="Ej. Box 1" type="text">
+        </div>
+
+        <!-- Info adicional en modo edición -->
+        <div *ngIf="boxesService.boxSeleccionado && boxesService.estadoAbm === 'editar'"
+          class="grid md:grid-cols-2 gap-4 mt-4">
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center">
+              <h3 class="text-sm font-semibold text-gray-700">Fecha de alta</h3>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ boxesService.boxSeleccionado.createdAt | fecha }}
+            </p>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center">
+              <h3 class="text-sm font-semibold text-gray-700">Usuario creador</h3>
+            </div>
+            <p class="text-sm text-gray-600 mt-1 capitalize">
+              {{ boxesService.boxSeleccionado.creatorUser.apellido.toLowerCase() }}
+              {{ boxesService.boxSeleccionado.creatorUser.nombre.toLowerCase() }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</app-modal>

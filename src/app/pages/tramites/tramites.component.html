@@ -1,0 +1,248 @@
+<app-abm-tramites (insertEvent)="nuevoTramite($event)" (updateEvent)="actualizarTramite($event)" />
+
+<!-- Listado de trámites -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <app-tarjeta-lista>
+        <div class="container mx-auto pb-6">
+
+            <!-- Header -->
+            <div class="header-tabla">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-center text-white">
+                        <div class="bg-white rounded p-2">
+                            <img src="assets/svg/tramites.svg"
+                                class="w-12 md:w-14 transition-transform hover:scale-110">
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="titulo-tabla">
+                                Trámites
+                            </h2>
+                            <p class="subtitulo-tabla"> Total de trámites: {{ this.tramitesService.tramites.length }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4 md:mt-0 space-x-4">
+                        <button *appPermisos="permiso_escritura" (click)="abrirAbm('crear')" class="boton-tabla-nuevo"
+                            title="Nuevo trámite">
+                            <span class="font-medium">Nuevo trámite</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="bg-white px-6 py-4 border-b">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative text-sm">
+                        <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="input-tabla">
+                            <option value='true'>Activos</option>
+                            <option value='false'>Inactivos</option>
+                            <option value=''>Todos</option>
+                        </select>
+                    </div>
+
+                    <div class="relative text-sm">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        <input #txtParametro placeholder="Buscar trámite..."
+                            (keyup)="filtrarParametro(txtParametro.value)" class="input-tabla-buscador" />
+                    </div>
+
+                    <select (change)="paginaActual = 1" [(ngModel)]="cantidadItems" class="input-tabla">
+                        <option value="10">10 elementos</option>
+                        <option value="20">20 elementos</option>
+                        <option value="50">50 elementos</option>
+                        <option value="100">100 elementos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla Desktop -->
+            <div class="hidden md:block overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="th-tabla">
+                                <div
+                                    class="group cursor-pointer flex items-center">
+                                    <span>Icono</span>
+                                </div>
+                            </th>
+                            <th class="th-tabla">
+                                <div (click)="ordenarPorColumna('descripcion')"
+                                    class="group cursor-pointer flex items-center">
+                                    <span>Descripción</span>
+                                    <span class="ml-2 text-gray-400 group-hover:text-gray-600">
+                                        <svg *ngIf="ordenar.columna == 'descripcion' && ordenar.direccion == 'asc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7" />
+                                        </svg>
+                                        <svg *ngIf="ordenar.columna == 'descripcion' && ordenar.direccion == 'desc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </th>
+                            <th class="th-tabla">
+                                <div (click)="ordenarPorColumna('identificador')"
+                                    class="group cursor-pointer flex items-center">
+                                    <span> Identificador </span>
+                                    <span class="ml-2 text-gray-400 group-hover:text-gray-600">
+                                        <svg *ngIf="ordenar.columna == 'identificador' && ordenar.direccion == 'asc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7" />
+                                        </svg>
+                                        <svg *ngIf="ordenar.columna == 'identificador' && ordenar.direccion == 'desc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </th>
+                            <th class="th-tabla">
+                                <div (click)="ordenarPorColumna('createdAt')"
+                                    class="group cursor-pointer flex items-center">
+                                    <span>Fecha de creación</span>
+                                    <span class="ml-2 text-gray-400 group-hover:text-gray-600">
+                                        <svg *ngIf="ordenar.columna == 'createdAt' && ordenar.direccion == 'asc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7" />
+                                        </svg>
+                                        <svg *ngIf="ordenar.columna == 'createdAt' && ordenar.direccion == 'desc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </th>
+                            <th *appPermisos="permiso_escritura" class="th-tabla">
+                                <div (click)="ordenarPorColumna('activo')"
+                                    class="group cursor-pointer flex items-center justify-center">
+                                    <span>Estado</span>
+                                    <span class="ml-2 text-gray-400 group-hover:text-gray-600">
+                                        <svg *ngIf="ordenar.columna == 'activo' && ordenar.direccion == 'asc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7" />
+                                        </svg>
+                                        <svg *ngIf="ordenar.columna == 'activo' && ordenar.direccion == 'desc'"
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </th>
+                            <th *appPermisos="permiso_escritura" class="th-tabla">
+                                <div class="group flex items-center justify-center">
+                                    <span>Acciones</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @for(tramite of this.tramitesService.tramites |
+                        filtroTramites:this.filtro.parametro:this.filtro.activo |
+                        paginate: {itemsPerPage: this.cantidadItems, currentPage: this.paginaActual}; track tramite.id){
+                        <tr [ngClass]="{'bg-red-50': !tramite.activo}" class="hover:bg-gray-50 transition duration-150">
+                            <td class="td-tabla">
+                                <img [src]="tramite.iconoUrl" class="w-10 h-10">
+                            </td>
+                            <td class="td-tabla">
+                                <div>{{ tramite.descripcion }}</div>
+                            </td>
+                            <td class="td-tabla">
+                                <div>{{ tramite.identificador }}</div>
+                            </td>
+                            <td class="td-tabla">
+                                <div>{{ tramite.createdAt | fecha }}</div>
+                            </td>
+                            <td *appPermisos="permiso_escritura" class="px-6 py-4 whitespace-nowrap text-center">
+                                <app-pastilla-estado [activo]=tramite.activo
+                                    (click)="actualizarEstado(tramite)"></app-pastilla-estado>
+                            </td>
+                            <td *appPermisos="permiso_escritura"
+                                class="px-6 py-4 whitespace-nowrap flex items-center justify-center text-center">
+                                <button (click)="abrirAbm('editar', tramite)" title="Editar trámite"
+                                    class="boton-tabla-editar">
+                                    <img src="assets/svg/editar.svg" class="w-4 h-4 opacity-80">
+                                    <span class="ml-2">Editar</span>
+                                </button>
+                            </td>
+                        </tr>
+                        }@empty {
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500 bg-gray-50">
+                                No se encontraron trámites
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vista Móvil -->
+            <div class="md:hidden space-y-4 p-4 max-h-[500px] overflow-y-auto">
+                @for(tramite of this.tramitesService.tramites |
+                filtroTramites:filtro.parametro:filtro.activo | paginate: {itemsPerPage:
+                cantidadItems, currentPage: paginaActual}; track tramite.id){
+                <div
+                    class="bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div [class]="tramite.activo ? 'border-l-4 border-blue-500 p-5' : 'border-l-4 border-red-500 p-5'">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img [src]="tramite.iconoUrl" class="w-10 h-10 mr-3">
+                                <div>
+                                    <div class="font-semibold text-lg text-gray-900">{{ tramite.descripcion }}</div>
+                                    <div class="text-sm text-gray-600 mt-1">{{ tramite.identificador }}</div>
+                                    <div class="text-sm text-gray-500 mt-1 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        {{ tramite.createdAt | fecha }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *appPermisos="permiso_escritura" class="mt-4 flex items-center justify-end space-x-2">
+                            <app-pastilla-estado [activo]=tramite.activo
+                                (click)="actualizarEstado(tramite)"
+                                class="transform hover:scale-105 transition-transform duration-200"></app-pastilla-estado>
+                            <button (click)="abrirAbm('editar', tramite)"
+                                class="boton-tabla-editar">
+                                <img src="assets/svg/editar.svg" class="w-4 h-4">
+                                <span class="ml-2 font-medium">Editar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }@empty {
+                <div class="text-center py-4 text-gray-500 bg-gray-50 rounded-lg">
+                    No se encontraron trámites
+                </div>
+                }
+            </div>
+
+            <!-- Paginación -->
+            <div class="mt-6 flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                <pagination-controls class="pagination-controls" nextLabel="Siguiente" previousLabel="Anterior"
+                    (pageChange)="paginaActual = $event">
+                </pagination-controls>
+            </div>
+
+        </div>
+    </app-tarjeta-lista>
+</div>

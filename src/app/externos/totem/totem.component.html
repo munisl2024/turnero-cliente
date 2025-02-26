@@ -1,0 +1,26 @@
+<div class="h-screen pb-20">
+    <div class="w-full py-16 bg-secondaryColor shadow-lg">
+        <h1 class="text-5xl font-bold text-center text-white">
+            Turnero municipal
+        </h1>
+    </div>
+    <div class="mt-20">
+        <h2 class="text-5xl font-bold text-center text-gray-800 mb-2">
+            Seleccione su trámite
+        </h2>
+        <p class="text-xl text-center text-gray-600">
+            Por favor, elija el tipo de trámite que desea realizar
+        </p>
+        <div class="flex items-center mt-12 justify-center">
+            <div class="flex items-center justify-center flex-wrap gap-6">
+                <button (click)="nuevoTurno(tramite)" *ngFor="let tramite of tramites"
+                    class="bg-white border-2 flex flex-col items-center justify-center border-gray-200 text-center w-[280px] h-[320px] rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-secondaryColor">
+                    <img [src]="tramite.iconoUrl" class="w-32 h-32" alt="Ícono del trámite">
+                    <p class="mt-8 text-xl font-semibold text-gray-700 px-4">
+                        {{ tramite.descripcion }}
+                    </p>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
