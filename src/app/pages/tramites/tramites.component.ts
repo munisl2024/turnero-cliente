@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ModalComponent } from '../../components/modal/modal.component';
 import { PastillaEstadoComponent } from '../../components/pastilla-estado/pastilla-estado.component';
 import { TarjetaListaComponent } from '../../components/tarjeta-lista/tarjeta-lista.component';
 import { PermisosDirective } from '../../directives/permisos.directive';
@@ -21,7 +20,6 @@ import { TramitesService } from '../../services/tramites.service';
     CommonModule,
     FormsModule,
     FechaPipe,
-    ModalComponent,
     NgxPaginationModule,
     RouterModule,
     PastillaEstadoComponent,
