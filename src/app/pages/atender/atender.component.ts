@@ -87,7 +87,7 @@ export default class AtenderComponent implements OnInit, OnDestroy {
 
   // Listado de tramites y boxes para el usuario estandar
   getListadoEstandar() {
-    this.usuariosToBoxesService.listarRelaciones({}).subscribe({
+    this.usuariosToBoxesService.listarRelaciones({ idUsuario: this.authService.usuario.userId }).subscribe({
       next: ({ usuariosToBoxes }) => {
         this.boxes = usuariosToBoxes.map((usuarioToBox: any) => {
           return {
@@ -99,7 +99,7 @@ export default class AtenderComponent implements OnInit, OnDestroy {
         if (this.boxes.length > 0) {
           this.boxSeleccionado = this.boxes[0].id;
         }
-        this.usuariosToTramitesService.listarRelaciones({}).subscribe({
+        this.usuariosToTramitesService.listarRelaciones({ idUsuario: this.authService.usuario.userId }).subscribe({
           next: ({ usuariosToTramites }) => {
             this.tramites = usuariosToTramites.map((usuarioToTramite: any) => {
               return {
