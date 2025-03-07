@@ -52,15 +52,15 @@ export default class TotemComponent implements OnInit, OnDestroy {
       idTramite: tramite.id,
       idBox: 1, // SIN ASIGNAR
     }
-    this.alertService.loading('Generando turno...');
+    this.alertService.loading('Espere por favor...');
     this.colaService.agregarACola(data).subscribe({
       next: () => {
         this.socketService.emit('totem-turno', 'actualizar');
         // Retardo de 2 segundos
-        // setTimeout(() => {
-        //   this.alertService.close();
-        // }, 2000);
-        this.alertService.close();
+        setTimeout(() => {
+          this.alertService.close();
+        }, 2000);
+        // this.alertService.close();
       },
       error: ({ error }) => this.alertService.errorApi(error.message)
     })
